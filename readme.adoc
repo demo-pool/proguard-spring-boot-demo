@@ -1,0 +1,47 @@
+== Maven package with lombok proguard 
+
+演示使用maven lombok、proguard、spring-boot打包
+
+[NOTE]
+====
+pom.xml中plugin要有顺序：
+先：proguard-maven-plugin
+后：spring-boot-maven-plugin
+====
+
+[NOTE]
+====
+推荐使用proguard.conf来配置，节约pom.xml长度
+====
+
+== 演示
+
+打包（顺序会是：编译，jar打包，旧jar改名，proguard解包混淆，spring-boot打包）
+
+[source, shell]
+----
+mvn clean package
+----
+
+运行
+
+[source, shell]
+----
+java -jar target/proguard-spring-boot-demo-0.0.1-SNAPSHOT.jar
+----
+
+可以观察到类被混淆了：
+
+[source]
+----
+Bean Class:class cn.devit.demo.a.b
+Dto Class:class cn.devit.demo.a.a
+Dto toString:User(username=admin)
+----
+
+
+=== 其他参考：
+
+. https://www.guardsquare.com/en/products/proguard/manual/examples[Proguard参考] 
+. http://wvengen.github.io/proguard-maven-plugin/dependencies.html[proguard-maven-plugin参考]
+. https://github.com/seregaSLM/proguard-spring-boot-example[proguard-spring-boot-example]
