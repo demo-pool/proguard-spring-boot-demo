@@ -7,7 +7,9 @@ public class UserService {
 
     public User getUser(String id) {
         User u = new User();
-        u.username = "admin";
+        u.setUsername("admin");
+        RuntimeException exception = new RuntimeException();
+        exception.printStackTrace();
         return u;
     }
 }

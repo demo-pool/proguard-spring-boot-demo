@@ -23,11 +23,13 @@ pom.xml中plugin要有顺序：
 mvn clean package
 ----
 
+打包完成后，可以在target下面找到proguard_map.txt
+
 运行
 
 [source, shell]
 ----
-java -jar target/proguard-spring-boot-demo-0.0.1-SNAPSHOT.jar
+java -jar web/target/proguard-spring-boot-demo-0.0.1-SNAPSHOT.jar
 ----
 
 可以观察到类被混淆了：
@@ -39,9 +41,16 @@ Dto Class:class cn.devit.demo.a.a
 Dto toString:User(username=admin)
 ----
 
+[NOTE]
+====
+不要设置 <attach>true</attach> 会导不生效。因为混淆过的文件单独命名了。
+attach的含义是将混淆过的jar，单独命名（添加后缀），上传nexus
+====
+
 
 === 其他参考：
 
 . https://www.guardsquare.com/en/products/proguard/manual/examples[Proguard参考] 
 . http://wvengen.github.io/proguard-maven-plugin/dependencies.html[proguard-maven-plugin参考]
 . https://github.com/seregaSLM/proguard-spring-boot-example[proguard-spring-boot-example]
+. https://search.maven.org/search?q=g:net.sf.proguard[Maven Repo]
