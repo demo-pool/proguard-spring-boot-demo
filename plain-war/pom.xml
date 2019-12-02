@@ -2,7 +2,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>proguard-spring-boot-demo-web</artifactId>
+  <artifactId>proguard-plain-war</artifactId>
+  <packaging>war</packaging>
   <parent>
     <groupId>cn.devit.demo</groupId>
     <artifactId>proguard-spring-boot-demo</artifactId>
@@ -10,13 +11,19 @@
   </parent>
   <dependencies>
     <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
     </dependency>
     <dependency>
       <groupId>cn.devit.demo</groupId>
@@ -32,7 +39,7 @@
         <version>2.1.1</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>proguard</goal>
             </goals>
@@ -41,6 +48,7 @@
         <configuration>
           <obfuscate>true</obfuscate>
           <addMavenDescriptor>true</addMavenDescriptor>
+          <injar>classes</injar>
           <assembly>
             <inclusions>
               <inclusion>
@@ -52,22 +60,12 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>
-              <groupId>cn.devit.demo</groupId>
-              <artifactId>proguard-spring-boot-demo-core</artifactId>
-            </exclude>
-          </excludes>
+          <packagingExcludes>
+            WEB-INF/lib/proguard-spring-boot-demo-core-0.0.1-SNAPSHOT.jar
+          </packagingExcludes>
         </configuration>
       </plugin>
     </plugins>

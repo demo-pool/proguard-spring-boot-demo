@@ -47,6 +47,80 @@ Dto toString:User(username=admin)
 attach的含义是将混淆过的jar，单独命名（添加后缀），上传nexus
 ====
 
+=== 2. 如果有多个jar工程要合并到war中混淆 ===
+
+[source,xml]
+----
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.github.wvengen</groupId>
+      <artifactId>proguard-maven-plugin</artifactId>
+      ...
+      <configuration>
+        ...
+        <assembly>
+          <inclusions>
+            <inclusion> <!--1-->
+              <groupId>cn.devit.demo</groupId>
+              <artifactId>proguard-spring-boot-demo-core</artifactId>
+            </inclusion>
+          </inclusions>
+        </assembly>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-maven-plugin</artifactId>
+      ...
+      <configuration>
+        <excludes>
+          <exclude> <!--2-->
+            <groupId>cn.devit.demo</groupId>
+            <artifactId>proguard-spring-boot-demo-core</artifactId>
+          </exclude>
+        </excludes>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+----
+<1> 设置混淆的包含哪些jar包
+<2> 在spring repackage 的时候排除
+
+最后混淆好的代码都会放在!jar/BOOT-INF/classes 里面
+
+=== 3. 如果是单纯war包
+
+关键是要设置proguard在war之前执行
+[source,xml]
+----
+<plugin>
+  <groupId>com.github.wvengen</groupId>
+  <artifactId>proguard-maven-plugin</artifactId>
+  <version>2.1.1</version>
+  <executions>
+    <execution>
+      <phase>prepare-package</phase> <!--1-->
+      <goals>
+        <goal>proguard</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <obfuscate>true</obfuscate>
+    <addMavenDescriptor>true</addMavenDescriptor>
+    <injar>classes</injar> <!--2-->
+  </configuration>
+</plugin>
+<section>
+  <title>Section Title</title> 
+</section>
+----
+<1> 先混淆，后package
+<2> 必要参数
+
+
 
 === 其他参考：
 

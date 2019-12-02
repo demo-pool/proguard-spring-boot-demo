@@ -14,5 +14,6 @@
   <modules>
     <module>web</module>
     <module>core</module>
+    <module>plain-war</module>
   </modules>
 </project>
